@@ -1,5 +1,11 @@
 package org.returnly.challenge.utils;
 
+/**
+ * Class that contains constants values.
+ * 
+ * @author pablo
+ *
+ */
 public class Constants {
 
 	public static final String URL_100PURE = "https://100pure-demo.myshopify.com/";

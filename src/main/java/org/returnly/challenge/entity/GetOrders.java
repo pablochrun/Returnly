@@ -2,6 +2,12 @@ package org.returnly.challenge.entity;
 
 import java.util.List;
 
+/**
+ * Wrapper class for a list of orders.
+ * 
+ * @author pablo
+ *
+ */
 public class GetOrders {
 	private List<Order> orders;
 

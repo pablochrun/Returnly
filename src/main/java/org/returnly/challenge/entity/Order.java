@@ -5,6 +5,12 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Class that modele an Order info
+ * 
+ * @author pablo
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Order implements Comparable<Order>{
 

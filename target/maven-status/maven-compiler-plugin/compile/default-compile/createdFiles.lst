@@ -1,7 +1,5 @@
 org\returnly\challenge\service\OrderService.class
 org\returnly\challenge\entity\Customer.class
-org\returnly\challenge\entity\DiscountCodes.class
-org\returnly\challenge\service\ItemService.class
 org\returnly\challenge\entity\Item.class
 org\returnly\challenge\utils\Utils.class
 org\returnly\challenge\application\App.class

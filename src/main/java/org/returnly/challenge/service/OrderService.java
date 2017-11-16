@@ -13,9 +13,16 @@ import org.returnly.challenge.entity.Customer;
 import org.returnly.challenge.entity.Item;
 import org.returnly.challenge.entity.Order;
 import org.returnly.challenge.utils.Constants;
+import org.returnly.challenge.utils.Utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+/**
+ * Class designed for specific order service operations.
+ * 
+ * @author pablo
+ *
+ */
 public class OrderService extends BaseService{
 
 	private int totalNumberOrders = 0;
@@ -24,6 +31,11 @@ public class OrderService extends BaseService{
 		super();		
 	}
 	
+	/**
+	 * Specific method to retrieve the total number of orders.
+	 * 
+	 * @return
+	 */
 	public int getTotalNumberOfOrders(){		
 		JsonNode jsonNode = getJSONNodeFromConnection("GET", "/admin/orders/count.json");
 		JsonNode countNode = jsonNode.get("count");		
@@ -31,6 +43,11 @@ public class OrderService extends BaseService{
 		return totalNumberOrders;
 	}
 	
+	/**
+	 * Specific method to obtain the number of unique customers from all orders.
+	 * 
+	 * @return
+	 */
 	public int getNumberUniqueCustomers(){
 		
 		HashSet<String> customerIds = new HashSet<String>();
@@ -59,7 +76,11 @@ public class OrderService extends BaseService{
 		return customerIds.size();
 	}
 	
-	
+	/**
+	 * Specific method to retrieve the items more and least frequently ordered in all order list.
+	 * 
+	 * @return
+	 */
 	public Item[] getMostLeastFrequentlyOrderedItem(){
 		
 		List<Order> orders = getAllOrders(this.totalNumberOrders);		
@@ -73,7 +94,11 @@ public class OrderService extends BaseService{
 		return getItemsArrayFromMap(itemsMap);
 	}
 
-
+	/**
+	 * Get average of amount from all orders.
+	 * 
+	 * @return
+	 */
 	public Double getMedianOrderValue() {
 		
 		List<Order> orders = getAllOrders(this.totalNumberOrders);	
@@ -84,9 +109,15 @@ public class OrderService extends BaseService{
 			numberOrders++;
 		}
 		
-	    return getRoundedDouble(totalAmountAllOrders/numberOrders);
+	    return Utils.getRoundedDouble(totalAmountAllOrders/numberOrders);
 	}
 	
+	/**
+	 * Specific method to obtain the shortest interval of time between two
+	 * consecutives orders for the same customer.
+	 * 
+	 * @return
+	 */
 	public Long getShortestIntervalBetweenOrders() {
 		List<Order> orders = getAllOrders(this.totalNumberOrders);		
 		Map<Customer, List<Order>> customerHash = getCustomerOrderMap(orders);
@@ -106,10 +137,16 @@ public class OrderService extends BaseService{
 		return minimalGlobalDifferenceOfTime;
 	}
 
+	/**
+	 * Discriminates the minimal time between orders for the same customer
+	 * 
+	 * @param orders
+	 * @return
+	 */
 	private long getMinimalTimeDifferenceBetweenOrders(List<Order> orders){
-		long minTime = 0;
-		
-		long prevTime = 0;
+		long minTime = 0;		
+		long prevTime = 0
+				;
 		for(Order order : orders){
 			if(prevTime == 0){
 				prevTime = order.getCreated_at().getTime();
@@ -125,6 +162,12 @@ public class OrderService extends BaseService{
 		return minTime;
 	}	
 	
+	/**
+	 * Obtain the customer map with the order list for each @Customer
+	 * 
+	 * @param orders
+	 * @return
+	 */
 	private Map<Customer, List<Order>> getCustomerOrderMap(List<Order> orders){
 		Map<Customer, List<Order>> customerHash = new Hashtable<Customer, List<Order>>();
 
@@ -145,6 +188,12 @@ public class OrderService extends BaseService{
 		return customerHash;		
 	}
 	
+	/**
+	 * Group each item depending on its frequence.
+	 * 
+	 * @param orders
+	 * @return
+	 */
 	private Map<Item, Integer> getItemMapGroupedByFrequency(List<Order> orders) {
 		Map<Item, Integer> maps = new HashMap<Item, Integer>();
 		for(Order order : orders){
@@ -161,6 +210,12 @@ public class OrderService extends BaseService{
 		return maps;
 	}
 	
+	/**
+	 * Retrieve a list with all orders.
+	 * 
+	 * @param totalNumberOrders
+	 * @return
+	 */
 	private List<Order> getAllOrders(int totalNumberOrders){
 		List<Order> orders = new LinkedList<Order>();
 
@@ -188,6 +243,15 @@ public class OrderService extends BaseService{
 		return orders;
 	}	
 	
+	/**
+	 * Build a LinkedList from the values of item map and return the most and the least
+	 * item ordered.
+	 * item[0]: The most frequently ordered.
+	 * item[1]: The least frequently ordered.
+	 * 
+	 * @param maps
+	 * @return
+	 */
 	private Item[] getItemsArrayFromMap(Map<Item, Integer> maps) {
 		
 		LinkedList<Item> orderedList = new LinkedList<Item>(maps.keySet());
@@ -198,6 +262,12 @@ public class OrderService extends BaseService{
 		return itemsArray;
 	}
 
+	/**
+	 * Retrieve a list of customers from all orders.
+	 * 
+	 * @param customerIds
+	 * @param page
+	 */
 	private void addCustomerIds(HashSet<String> customerIds, int page){
 		List<Order> orders = getListOrderFromConnection("GET", "/admin/orders.json",Constants.MAX_LIMIT, page);	
 		for (Order order : orders){

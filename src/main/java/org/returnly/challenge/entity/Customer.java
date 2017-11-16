@@ -1,7 +1,12 @@
 package org.returnly.challenge.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+/**
+ * Class that modele a Customer info
+ * 
+ * @author pablo
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Customer {	
 	private String email;

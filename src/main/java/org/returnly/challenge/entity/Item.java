@@ -2,6 +2,12 @@ package org.returnly.challenge.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Class that modele an Item info
+ * 
+ * @author pablo
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Item {
 	
@@ -68,6 +74,4 @@ public class Item {
 			return false;
 		return true;
 	}
-	
-
 }
